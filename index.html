@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Price Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Housing Price Prediction</h1>
+        <form id="prediction-form">
+            <label for="feature1">Feature 1:</label>
+            <input type="text" id="feature1" name="feature1" required>
+            <label for="feature2">Feature 2:</label>
+            <input type="text" id="feature2" name="feature2" required>
+            <!-- Add more input fields as necessary for your model -->
+            <button type="submit">Predict Price</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 'Predicted Price: ' + data.price;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = 'Error predicting price.';
+            });
+        });
+    </script>
+</body>
+</html>
